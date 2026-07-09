@@ -61,8 +61,11 @@ const VectoraApp = () => {
 
       const res = await fetch('/api/convert', { method: 'POST', body: formData });
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || 'Conversion failed');
+        const text = await res.text();
+        console.error('Server response:', text);
+        let detail: string | undefined;
+        try { detail = JSON.parse(text).detail } catch {}
+        throw new Error(detail || text || 'Conversion failed');
       }
 
       const blob = await res.blob();
