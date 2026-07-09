@@ -60,13 +60,16 @@ const VectoraApp = () => {
       formData.append('baseName', baseName || 'app-icon');
 
       const res = await fetch('/api/convert', { method: 'POST', body: formData });
-      if (!res.ok) throw new Error('Conversion failed');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || 'Conversion failed');
+      }
 
       const blob = await res.blob();
       saveAs(blob, `${baseName || 'app-icon'}.zip`);
     } catch (err) {
       console.error(err);
-      alert('Error generating assets. Check console.');
+      alert(`Error: ${err instanceof Error ? err.message : 'Unknown'}`);
     } finally {
       setLoading(false);
     }
