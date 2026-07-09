@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { convertSvg } from '@/lib/convert';
 
 interface CustomAsset {
   size: number;
@@ -9,6 +8,7 @@ interface CustomAsset {
 
 export async function POST(req: NextRequest) {
   try {
+    const { convertSvg } = await import('@/lib/convert');
     const formData = await req.formData();
     const svgFile = formData.get('svg') as File | null;
     const selected: string[] = JSON.parse((formData.get('selected') as string) || '[]');
