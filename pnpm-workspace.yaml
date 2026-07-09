@@ -1,3 +1,4 @@
-ignoredBuiltDependencies:
+# ponytail: sharp needs native binary build for Vercel (linux x64)
+onlyBuiltDependencies:
   - sharp
   - unrs-resolver

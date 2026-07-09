@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (err) {
-    console.error('Convert error:', err);
-    return NextResponse.json({ error: 'Conversion failed' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('Convert error:', msg, err);
+    return NextResponse.json({ error: 'Conversion failed', detail: msg }, { status: 500 });
   }
 }
